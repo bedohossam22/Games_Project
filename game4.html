@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Game 4: JavaScript Quiz</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-blue-50 min-h-screen flex flex-col items-center justify-center p-6">
+  <h1 class="text-3xl font-bold text-blue-800 mb-6">🧠 JavaScript Trick Quiz</h1>
+
+  <div id="questionBox" class="text-lg mb-4 font-semibold text-center"></div>
+  <div id="optionsBox" class="grid gap-4 w-full max-w-md"></div>
+  <p id="feedback" class="text-lg font-bold mt-6"></p>
+
+  <script>
+    const questions = [
+      { question: "Which method returns the closest parent element that matches a selector?", options: ["closest", "findParent", "nearest", "getParentMatch"], answer: "closest" },
+      { question: "Which keyword is used to declare a block-scoped variable?", options: ["var", "global", "const", "define"], answer: "const" },
+      { question: "How do you check if a variable is an array?", options: ["typeof x === 'array'", "Array.isArray(x)", "x instanceof Object", "x.length > 0"], answer: "Array.isArray(x)" },
+      { question: "What does `===` check in JavaScript?", options: ["Only value", "Only type", "Value and type", "Reference only"], answer: "Value and type" },
+      { question: "Which method adds a new item to the end of an array?", options: ["add()", "push()", "insert()", "append()"], answer: "push()" },
+      { question: "What does `NaN` stand for?", options: ["No assigned number", "Not a Node", "Not a Number", "Name as Number"], answer: "Not a Number" },
+      { question: "How do you declare an arrow function?", options: ["function => ()", "() => {}", "() -> {}", "arrow()"], answer: "() => {}" },
+      { question: "Which one is a falsy value?", options: ["'false'", "[]", "0", "'0'"], answer: "0" },
+      { question: "Which object is used to work with dates?", options: ["Time", "Date", "Calendar", "Moment"], answer: "Date" },
+      { question: "What is returned by typeof null?", options: ["null", "undefined", "object", "NaN"], answer: "object" },
+      { question: "Which method removes the last element from an array?", options: ["pop()", "removeLast()", "shift()", "spliceLast()"], answer: "pop()" },
+      { question: "What does JSON stand for?", options: ["Java Source Object Notation", "JavaScript Object Notation", "Java Structure Over Network", "Just Simple Object Naming"], answer: "JavaScript Object Notation" },
+      { question: "How do you write a comment in JavaScript?", options: ["<!-- comment -->", "// comment", "** comment **", "/* comment //"], answer: "// comment" },
+      { question: "What does DOM stand for?", options: ["Document Object Model", "Data Object Manager", "Dynamic Output Model", "Display Order Map"], answer: "Document Object Model" },
+      { question: "How do you prevent a form from submitting?", options: ["event.prevent()", "preventDefault()", "stopSubmit()", "form.block()"], answer: "preventDefault()" }
+    ];
+
+    let currentIndex = 0;
+    let score = 0;
+
+    const questionBox = document.getElementById("questionBox");
+    const optionsBox = document.getElementById("optionsBox");
+    const feedback = document.getElementById("feedback");
+
+    function loadQuestion() {
+      const q = questions[currentIndex];
+      questionBox.textContent = `Question ${currentIndex + 1} of ${questions.length}: ${q.question}`;
+      feedback.textContent = "";
+      optionsBox.innerHTML = "";
+
+      q.options.forEach(option => {
+        const btn = document.createElement("button");
+        btn.textContent = option;
+        btn.className = "w-full bg-white border border-blue-300 rounded py-2 px-4 hover:bg-blue-100";
+        btn.onclick = () => checkAnswer(option, q.answer);
+        optionsBox.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(selected, correct) {
+      if (selected === correct) {
+        score++;
+        feedback.textContent = "✅ Correct!";
+        feedback.className = "text-green-700 text-lg font-bold mt-6";
+      } else {
+        feedback.textContent = `❌ Wrong. The correct answer is "${correct}".`;
+        feedback.className = "text-red-700 text-lg font-bold mt-6";
+      }
+
+      currentIndex++;
+      if (currentIndex < questions.length) {
+        setTimeout(loadQuestion, 2000);
+      } else {
+        setTimeout(() => {
+          questionBox.textContent = `🎉 Quiz Complete! You scored ${score} out of ${questions.length}.`;
+          optionsBox.innerHTML = "";
+          feedback.textContent = "";
+        }, 2000);
+      }
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>

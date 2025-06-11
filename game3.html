@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Game 3: True or False</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-yellow-50 min-h-screen flex flex-col items-center justify-center p-6">
+  <h1 class="text-3xl font-bold text-yellow-700 mb-6">🧠 True or False: Code Edition</h1>
+
+  <div id="questionBox" class="text-xl text-center mb-6 font-mono p-4 bg-white rounded shadow">
+    Loading question...
+  </div>
+
+  <div class="flex space-x-6 mb-4">
+    <button id="trueBtn" class="px-6 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+      ✅ True
+    </button>
+    <button id="falseBtn" class="px-6 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+      ❌ False
+    </button>
+  </div>
+
+  <p id="feedback" class="text-lg font-bold mt-4"></p>
+
+  <script>
+    const questions = [
+      { statement: "5 > 3", answer: true },
+      { statement: '"3" == 3', answer: true },
+      { statement: 'typeof null === "object"', answer: true },
+      { statement: '[] === []', answer: false },
+      { statement: '"hello".length === 5', answer: true },
+      { statement: 'typeof 123 === "string"', answer: false },
+      { statement: 'true && false === true', answer: false },
+      { statement: '10 % 2 === 0', answer: true },
+      { statement: '"abc"[1] === "b"', answer: true },
+      { statement: 'NaN === NaN', answer: false }
+    ];
+
+    let current = 0;
+    const questionBox = document.getElementById("questionBox");
+    const feedback = document.getElementById("feedback");
+
+    function loadQuestion() {
+      if (current < questions.length) {
+        questionBox.textContent = questions[current].statement;
+        feedback.textContent = "";
+      } else {
+        questionBox.textContent = "🎉 You've completed all questions!";
+        document.getElementById("trueBtn").disabled = true;
+        document.getElementById("falseBtn").disabled = true;
+      }
+    }
+
+    function checkAnswer(userAnswer) {
+      const correct = questions[current].answer;
+      if (userAnswer === correct) {
+        feedback.textContent = "✅ Correct!";
+        feedback.className = "text-green-700 text-lg font-bold mt-4";
+      } else {
+        feedback.textContent = "❌ Nope, try the next one!";
+        feedback.className = "text-red-700 text-lg font-bold mt-4";
+      }
+      current++;
+      setTimeout(loadQuestion, 1500);
+    }
+
+    document.getElementById("trueBtn").addEventListener("click", () => checkAnswer(true));
+    document.getElementById("falseBtn").addEventListener("click", () => checkAnswer(false));
+
+    loadQuestion();
+  </script>
+</body>
+</html>

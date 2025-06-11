@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Game 2: Write the HTML Tag</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-orange-50 min-h-screen flex flex-col items-center justify-center p-6">
+  <h1 class="text-3xl font-bold text-orange-700 mb-6">🧱 Type the Correct HTML Tag</h1>
+
+  <div class="text-xl mb-4">
+    Write the HTML tag for: <span id="description" class="font-bold text-orange-900">paragraph</span>
+  </div>
+
+  <form id="tagForm" class="flex flex-col items-center space-y-3 w-full max-w-sm">
+    <input
+      id="tagInput"
+      type="text"
+      class="w-full px-4 py-2 border border-gray-300 rounded text-lg"
+      placeholder="e.g. <p></p> or <img />"
+      required
+    />
+    <button
+      type="submit"
+      class="bg-orange-500 text-white px-6 py-2 rounded hover:bg-orange-600"
+    >
+      Submit
+    </button>
+  </form>
+
+  <p id="tagResult" class="mt-4 text-lg font-medium"></p>
+
+  <script>
+  const elementData = [
+  { tag: "p", label: "paragraph", type: "normal" },
+  { tag: "h1", label: "header 1", type: "normal" },
+  { tag: "h2", label: "header 2", type: "normal" },
+  { tag: "div", label: "container", type: "normal" },
+  { tag: "span", label: "inline container (on same line element)", type: "normal" },
+  { tag: "a", label: "link", type: "normal" },
+  { tag: "button", label: "button", type: "normal" },
+  { tag: "strong", label: "bold text", type: "normal" },
+  { tag: "em", label: "italic text", type: "normal" },
+  { tag: "nav", label: "navigation (start of page)", type: "normal" },
+  { tag: "section", label: "content section", type: "normal" },
+  { tag: "footer", label: "footer (end of page)", type: "normal" },
+  { tag: "img", label: "image", type: "self-closing" },
+  { tag: "br", label: "line break", type: "self-closing" },
+  { tag: "hr", label: "horizontal line", type: "self-closing" }
+];
+
+
+    let current = {};
+
+    const descriptionSpan = document.getElementById("description");
+    const tagResult = document.getElementById("tagResult");
+    const tagInput = document.getElementById("tagInput");
+
+    function pickRandomElement() {
+      current = elementData[Math.floor(Math.random() * elementData.length)];
+      descriptionSpan.textContent = current.label;
+      tagInput.value = "";
+      tagResult.textContent = "";
+    }
+
+    document.getElementById("tagForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const userInput = tagInput.value.trim().toLowerCase();
+      let isCorrect = false;
+
+      if (current.type === "normal") {
+        isCorrect = userInput === `<${current.tag}></${current.tag}>`;
+      } else {
+        isCorrect = userInput === `<${current.tag} />` || userInput === `<${current.tag}/>`;
+      }
+
+      if (isCorrect) {
+        tagResult.textContent = "✅ Correct!";
+        tagResult.className = "mt-4 text-green-700 font-bold";
+        setTimeout(pickRandomElement, 1500);
+      } else {
+        tagResult.textContent = `❌ Try again. Expected Format: <element></element> ` 
+        tagResult.className = "mt-4 text-red-700 font-bold";
+      }
+    });
+
+    pickRandomElement();
+  </script>
+</body>
+</html>

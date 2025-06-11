@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Game 1: Guess the Language</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-4">
+  <h1 class="text-3xl font-bold text-gray-800 mb-6">🧠 Guess the Programming Language</h1>
+
+  <div id="letterGrid" class="grid gap-4 mb-6">
+    <!-- Boxes go here -->
+  </div>
+
+  <form id="guessForm" class="flex space-x-2 mb-4">
+    <input
+      id="guessInput"
+      type="text"
+      maxlength="1"
+      class="w-12 h-12 text-center text-2xl border rounded shadow"
+      placeholder="_"
+      required
+    />
+    <button type="submit" class="bg-blue-500 text-white px-4 rounded hover:bg-blue-600">
+      Guess
+    </button>
+  </form>
+
+  <button id="nextBtn" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mb-4">
+    🔁 Next Word
+  </button>
+
+  <p id="result" class="text-lg font-medium text-green-700"></p>
+
+  <script>
+    const languages = ["Python", "JavaScript", "Java", "Csharp", "Ruby", "Kotlin", "Swift", "Go", "PHP", "Rust", "Scala", "Perl", "Dart", "TypeScript", "HTML", "CSS", "C"];
+
+    let answer = "";
+    let guessed = [];
+
+    const letterGrid = document.getElementById("letterGrid");
+    const resultText = document.getElementById("result");
+
+    function pickNewWord() {
+      answer = languages[Math.floor(Math.random() * languages.length)].toUpperCase();
+      guessed = Array(answer.length).fill("_");
+      drawBoxes();
+      resultText.textContent = "";
+      console.clear();
+      console.log("Answer:", answer);
+    }
+
+    function drawBoxes() {
+      letterGrid.innerHTML = "";
+      letterGrid.className = `grid grid-cols-${Math.min(answer.length, 10)} gap-4 mb-6`;
+      guessed.forEach(letter => {
+        const box = document.createElement("div");
+        box.className = "w-14 h-14 bg-white border-2 border-gray-400 rounded-lg flex items-center justify-center text-2xl font-bold";
+        box.textContent = letter;
+        letterGrid.appendChild(box);
+      });
+    }
+
+    document.getElementById("guessForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const input = document.getElementById("guessInput");
+      const guess = input.value.toUpperCase();
+
+      let correct = false;
+      for (let i = 0; i < answer.length; i++) {
+        if (answer[i] === guess) {
+          guessed[i] = guess;
+          correct = true;
+        }
+      }
+
+      drawBoxes();
+      resultText.textContent = correct ? "✅ Good guess!" : "❌ Not in the word.";
+      input.value = "";
+
+      if (!guessed.includes("_")) {
+        resultText.textContent = "🎉 You guessed it! The word is " + answer + "!";
+      }
+    });
+
+    document.getElementById("nextBtn").addEventListener("click", pickNewWord);
+
+    // Start first word
+    pickNewWord();
+  </script>
+</body>
+</html>
