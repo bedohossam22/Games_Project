@@ -26,7 +26,10 @@
       Guess
     </button>
   </form>
-
+  
+  <button id="hintBtn" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 mb-4">
+    💡 Hint (1 left)
+  </button>
   <button id="nextBtn" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mb-4">
     🔁 Next Word
   </button>
@@ -38,13 +41,20 @@
 
     let answer = "";
     let guessed = [];
+    let hintUsed = false;
 
     const letterGrid = document.getElementById("letterGrid");
     const resultText = document.getElementById("result");
+    const hintBtn = document.getElementById("hintBtn");
 
     function pickNewWord() {
       answer = languages[Math.floor(Math.random() * languages.length)].toUpperCase();
       guessed = Array(answer.length).fill("_");
+      hintUsed = false;
+      hintBtn.textContent = "💡 Hint (1 left)";
+      hintBtn.disabled = false;
+      hintBtn.classList.remove("bg-gray-400", "hover:bg-gray-400");
+      hintBtn.classList.add("bg-yellow-500", "hover:bg-yellow-600");
       drawBoxes();
       resultText.textContent = "";
       console.clear();
@@ -60,6 +70,13 @@
         box.textContent = letter;
         letterGrid.appendChild(box);
       });
+    }
+
+    function checkIfSolved() {
+      if (!guessed.includes("_")) {
+        resultText.textContent = "🎉 You guessed it! The word is " + answer + "!";
+        hintBtn.disabled = true;
+      }
     }
 
     document.getElementById("guessForm").addEventListener("submit", function (e) {
@@ -79,14 +96,35 @@
       resultText.textContent = correct ? "✅ Good guess!" : "❌ Not in the word.";
       input.value = "";
 
-      if (!guessed.includes("_")) {
-        resultText.textContent = "🎉 You guessed it! The word is " + answer + "!";
-      }
+      checkIfSolved();
     });
 
     document.getElementById("nextBtn").addEventListener("click", pickNewWord);
 
-    // Start first word
+    hintBtn.addEventListener("click", () => {
+      if (hintUsed) return;
+      
+      const hiddenIndexes = guessed
+        .map((char, index) => (char === "_" ? index : null))
+        .filter(index => index !== null);
+
+      if (hiddenIndexes.length === 0) return;
+
+      const randomIndex = hiddenIndexes[Math.floor(Math.random() * hiddenIndexes.length)];
+      guessed[randomIndex] = answer[randomIndex];
+
+      drawBoxes();
+      resultText.textContent = `💡 Hint used! Letter "${answer[randomIndex]}" revealed.`;
+      
+      hintUsed = true;
+      hintBtn.textContent = "💡 Hint (0 left)";
+      hintBtn.classList.remove("bg-yellow-500", "hover:bg-yellow-600");
+      hintBtn.classList.add("bg-gray-400", "hover:bg-gray-400");
+
+      checkIfSolved();
+    });
+
+    // Start the first word
     pickNewWord();
   </script>
 </body>
