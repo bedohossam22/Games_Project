@@ -2,11 +2,9 @@ const CACHE_NAME = "my-pwa-cache-v1";
 const urlsToCache = [
   "/",
   "./index.html",
-  "./style/style.css",
-  "./js/js.js",
-  "./js/questions.json",
-  "./images/rocket.png",
-  "./images/rocket.png",
+  "./game1.html",
+  "./game2.html",
+  "https://static.wikia.nocookie.net/disney/images/2/25/Profile_-_Vanellope_Von_schweetz.jpeg/revision/latest?cb=20190312023329",
 ];
 
 self.addEventListener("install", (event) => {
