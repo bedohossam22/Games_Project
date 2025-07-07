@@ -1,0 +1,19 @@
+{
+  "name": "My Vanilla PWA",
+  "short_name": "PWA",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#1a1a1a",
+  "theme_color": "#4a90e2",
+  "icons": [
+    {
+      "src": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaS0_ieqNG8GSYdORJdbg5bFhqjpQ7j1e1NQ&s",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaS0_ieqNG8GSYdORJdbg5bFhqjpQ7j1e1NQ&s",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
